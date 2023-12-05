@@ -17,21 +17,18 @@ def main():
     uploaded_file = st.file_uploader(
         "Upload Image", type=["jpg", "jpeg", "png"])
 
-    # Button to toggle image comparison visibility
-    show_image_comparison_button = st.button("Process Transliteration")
-
-    # Boolean flag to control image comparison visibility
-    show_image_comparison = False
+    show_process = st.button("Process Transliteration")
+    image_processed = False
 
     # Check if the button is clicked
-    if show_image_comparison_button:
+    if show_process:
         # Display the uploaded image if available
         if uploaded_file is not None:
             image = Image.open(uploaded_file)
             grayscaled_image, blurred_image, divided_image, thresholded_image, morphological_closing_image, binary_image, dilated_image = image_preprocessing_process(image)
-            show_image_comparison = not show_image_comparison
+            image_processed = not image_processed
 
-    if show_image_comparison:
+    if image_processed:
         home_tab, preprocessing_tab, od_tab = st.tabs(
             ["Home", "Preprocessing", "Object Detection"])
 
