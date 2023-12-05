@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 def annotations_process(annotation_path, image, row_coordinates):
-
+  # Membaca label
   with open('./label/labels.json', 'r') as file:
     labels = json.load(file)
 

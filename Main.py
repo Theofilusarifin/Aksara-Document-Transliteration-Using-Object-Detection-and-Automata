@@ -1,15 +1,13 @@
+import os
+import io
 import cv2
-from PIL import Image
-import streamlit as st
 import time
 import numpy as np
-import os
+from PIL import Image
+import streamlit as st
 import matplotlib.pyplot as plt
-import io
-
 
 from streamlit_image_comparison import image_comparison
-
 from codes.preprocessing import image_preprocessing_process
 from codes.object_detection import object_detection_process
 from codes.object_detection import image_result_process
@@ -17,11 +15,9 @@ from codes.projection_profile import projection_profile_process
 from codes.annotation import annotations_process
 from codes.transliteration import dfa_process
 
-
 # set page config
 st.set_page_config(
     page_title="Aksara Document Object Detection", layout="centered")
-
 
 def transliteration_pipeline(image):
     global result_text
@@ -88,8 +84,10 @@ def main():
 
     if image_processed:
         home_tab, preprocessing_tab, od_tab = st.tabs(
-            ["Home", "Preprocessing", "Object Detection"])
+            ["🏠 Home", "🛠️ Preprocessing", "👁️‍🗨 Object Detection"]
+        )
 
+        # HOME TAB
         with home_tab.container():
             # Use columns to create two columns
             col1, col2 = st.columns(2)
@@ -106,15 +104,16 @@ def main():
             col2.text_area("Transliteration Result",
                            value=result_text_combined, height=300)
 
-        preprocessing_tab.subheader('Preprocessing')
-        # Path to the folder containing preprocessed images
-        preprocessed_folder = "./images/preprocessed/"
-
-        # Get a list of all image files in the folder
-        image_files = [f for f in os.listdir(
-            preprocessed_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
-
+        # PREPROCESSING TAB
         with preprocessing_tab.container():
+            st.info(
+                'Click the image to zoom in and see the preprocessing steps more clearly', icon="ℹ️")
+            # Path to the folder containing preprocessed images
+            preprocessed_folder = "./images/preprocessed/"
+            # Get a list of all image files in the folder
+            image_files = [f for f in os.listdir(
+                preprocessed_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+
             rows, cols = 1, 4
             fig, axes = plt.subplots(rows, cols, figsize=(15, 5))
 
@@ -144,17 +143,26 @@ def main():
             # Display the image in Streamlit
             st.image(image_stream, use_column_width=True)
 
-        od_tab.subheader('Object Detection')
         # create container directly within the tab
         with od_tab.container():
+            st.info(
+                'Use the slider to compare the original and processed image', icon="ℹ️")
+            
+            with st.expander("Label Explanation"):
+                    st.write("The labels used in the object detection represent different types of characters:")
+                    st.write("- `u_'something'`: Aksara Utama")
+                    st.write("- `p_'something'`: Aksara Pasangan")
+                    st.write("- `s_'something'`: Aksara Sandhangan")
+
             processed_image = cv2.imread('./images/result/result_image.jpg')
             # render image-comparison
             image_comparison(
                 img1=image,
                 img2=processed_image,
-                width=600,
+                width=700,
                 make_responsive=False,
             )
+
 
 if __name__ == "__main__":
     main()

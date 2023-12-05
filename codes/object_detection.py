@@ -5,7 +5,6 @@ from ultralytics import YOLO
 
 def object_detection_process(image):
     TEST_LABEL_PATH = './images/result/'
-    IMAGE_PATH = './images/preprocessed/4_thresholded.jpg'
     MODEL_PATH = './model/model.pt'
     RESULT_IMAGE_NAME = 'result'
 
@@ -76,7 +75,6 @@ def image_result_process(original_image, annotation_path):
         45: 'u_wa',
         46: 'u_ya'
     }
-
 
     # Assuming annotations are in a text file with one line per annotation
     with open(annotation_path, 'r') as file:
