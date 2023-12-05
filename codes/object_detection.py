@@ -2,7 +2,7 @@ import os
 import cv2
 import shutil
 
-def prediction(model, image_path):
+def object_detection_process(model, image_path):
     TEST_LABEL_PATH = ''
 
     input_image = cv2.imread(image_path)

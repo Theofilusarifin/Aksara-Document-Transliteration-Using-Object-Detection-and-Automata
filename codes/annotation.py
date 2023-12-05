@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def process_annotations(annotations, labels, image, coordinates ):
+def annotations_process(annotations, labels, image, coordinates ):
   # List untuk menyimpan hasil anotation yang sudah di proses
   document_annotations = []
 
@@ -24,8 +24,7 @@ def process_annotations(annotations, labels, image, coordinates ):
   df['X'] = (df['X Center'] - 0.5 * df['Width']) * image_width
 
   # Drop kolom pada dataframe yang sudah tidak dibutuhkan
-  df.drop(columns=['X Center', 'Y Center',
-          'Width', 'Height'], axis=1, inplace=True)
+  df.drop(columns=['X Center', 'Y Center','Width', 'Height'], axis=1, inplace=True)
 
   # Iterasi batasan untuk tiap segmen
   for y_start, y_end in coordinates:

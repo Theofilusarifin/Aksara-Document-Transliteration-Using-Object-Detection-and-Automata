@@ -1,6 +1,6 @@
 import numpy as np
 
-def horizontal_pp(target_image, input_image):
+def projection_profile_process(target_image, input_image):
     # CONSTANT
     TRESHOLD = 0
     ZERO_ITTERATION = 10
