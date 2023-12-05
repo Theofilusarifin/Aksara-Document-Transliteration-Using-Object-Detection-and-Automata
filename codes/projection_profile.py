@@ -1,6 +1,7 @@
 import numpy as np
 
-def projection_profile_process(target_image, input_image):
+
+def projection_profile_process(input_image):
     # CONSTANT
     TRESHOLD = 0
     ZERO_ITTERATION = 10
@@ -9,9 +10,6 @@ def projection_profile_process(target_image, input_image):
     start_putih = []
     end_putih = []
     iteration = 0
-
-    # List untuk menyimpan hasil
-    h_segmentation = []
 
     # Melakukan penjumlahan pada gambar secara horizontal ke samping
     h_projection = np.sum(input_image, axis=1)
@@ -45,11 +43,6 @@ def projection_profile_process(target_image, input_image):
           end_putih.append(len(h_projection))
 
     # Gabungkan koordinat awal dan akhir tiap segmen untuk return
-    coordinates = list(zip(start_putih, end_putih))
+    row_coordinates = list(zip(start_putih, end_putih))
 
-    # Iterasi tiap koordinat awal dan akhir untuk melakukan pemotongan segmen pada gambar target
-    for start, end in coordinates:
-        t = target_image[start:end, :]
-        h_segmentation.append(t)
-
-    return h_segmentation, coordinates
+    return row_coordinates

@@ -1,7 +1,17 @@
 import pandas as pd
+import json
 
+def annotations_process(annotation_path, image, row_coordinates):
 
-def annotations_process(annotations, labels, image, coordinates ):
+  with open('./label/labels.json', 'r') as file:
+    labels = json.load(file)
+
+  labels = {int(key): value for key, value in labels.items()}
+
+  # Assuming annotations are in a text file with one line per annotation
+  with open(annotation_path, 'r') as file:
+    annotations = [list(map(float, line.strip().split())) for line in file]
+
   # List untuk menyimpan hasil anotation yang sudah di proses
   document_annotations = []
 
@@ -27,7 +37,7 @@ def annotations_process(annotations, labels, image, coordinates ):
   df.drop(columns=['X Center', 'Y Center','Width', 'Height'], axis=1, inplace=True)
 
   # Iterasi batasan untuk tiap segmen
-  for y_start, y_end in coordinates:
+  for y_start, y_end in row_coordinates:
     # Filter dataframe annotasi untuk mengumpulkan hasil anotasi pada baris segmen yang dipilih
     selected_df = df[(df['Y'] >= y_start) & (df['Y'] <= y_end)]
     # Urutkan hasil anotasi pada satu baris berdasarkan X untuk pembacaan dari kiri ke kanan
