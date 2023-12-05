@@ -19,6 +19,7 @@ from codes.transliteration import dfa_process
 st.set_page_config(
     page_title="Aksara Document Object Detection", layout="centered")
 
+
 def transliteration_pipeline(image):
     global result_text
 
@@ -73,7 +74,7 @@ def main():
             with st.spinner("Processing..."):
                 transliteration_pipeline(image)
 
-            alert_message = "Document Transliteration has been successfully completed."
+            alert_message = "Document Transliteration has been completed."
             show_alert(alert_message, 'success')
 
             # Set the flag to indicate that the image has been processed
@@ -89,6 +90,8 @@ def main():
 
         # HOME TAB
         with home_tab.container():
+            st.info(
+                'Scroll for more transliteration details if the content exceeds the text area', icon="ℹ️")
             # Use columns to create two columns
             col1, col2 = st.columns(2)
 
@@ -147,22 +150,23 @@ def main():
         with od_tab.container():
             st.info(
                 'Use the slider to compare the original and processed image', icon="ℹ️")
-            
+
             with st.expander("Label Explanation"):
-                    st.write("The labels used in the object detection represent different types of characters:")
-                    st.write("- `u_'something'`: Aksara Utama")
-                    st.write("- `p_'something'`: Aksara Pasangan")
-                    st.write("- `s_'something'`: Aksara Sandhangan")
+                st.write(
+                    "The labels used in the object detection represent different types of characters:")
+                st.write("- `u_'something'`: Aksara Utama")
+                st.write("- `p_'something'`: Aksara Pasangan")
+                st.write("- `s_'something'`: Aksara Sandhangan")
 
             processed_image = cv2.imread('./images/result/result_image.jpg')
             # render image-comparison
             image_comparison(
                 img1=image,
                 img2=processed_image,
-                width=700,
+                width = 700,
                 make_responsive=False,
+                in_memory=False
             )
-
 
 if __name__ == "__main__":
     main()
