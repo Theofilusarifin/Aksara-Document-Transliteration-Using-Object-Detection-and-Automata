@@ -16,8 +16,8 @@ from codes.annotation import annotations_process
 from codes.transliteration import dfa_process
 
 # set page config
-st.set_page_config(
-    page_title="Aksara Document Object Detection", layout="centered")
+# st.set_page_config(
+#     page_title="Aksara Document Object Detection", layout="centered")
 
 
 def transliteration_pipeline(image):
