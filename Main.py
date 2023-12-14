@@ -1,11 +1,8 @@
-import os
-import io
 import cv2
 import time
 import numpy as np
 from PIL import Image
 import streamlit as st
-import matplotlib.pyplot as plt
 
 from streamlit_image_comparison import image_comparison
 from codes.preprocessing import image_preprocessing_process
@@ -14,11 +11,6 @@ from codes.object_detection import image_result_process
 from codes.projection_profile import projection_profile_process
 from codes.annotation import annotations_process
 from codes.transliteration import dfa_process
-
-# set page config
-# st.set_page_config(
-#     page_title="Aksara Document Object Detection", layout="centered")
-
 
 def transliteration_pipeline(image):
     global result_text
@@ -42,7 +34,6 @@ def transliteration_pipeline(image):
 def show_alert(alert_message, type='warning'):
     # Placeholder for the warning message
     alert_placeholder = st.empty()
-
     if type == 'warning':
         # Display the warning message
         alert_placeholder.warning(alert_message)
@@ -84,12 +75,8 @@ def main():
             show_alert(alert_message, 'warning')
 
     if image_processed:
-        home_tab, preprocessing_tab, od_tab = st.tabs(
-            ["🏠 Home", "🛠️ Preprocessing", "👁️‍🗨 Object Detection"]
-        )
-
         # HOME TAB
-        with home_tab.container():
+        with st.container():
             st.info(
                 'Scroll for more transliteration details if the content exceeds the text area', icon="ℹ️")
             # Use columns to create two columns
@@ -99,74 +86,12 @@ def main():
             image = Image.open(uploaded_file)
             col1.image(image, caption="Original Image", use_column_width=True)
 
-            # Dummy processing (replace this with your actual processing logic)
             # Use a loop or any method to concatenate the tuple elements into a single string
             result_text_combined = "\n".join(
                 [" ".join(line) for line in result_text])
 
             col2.text_area("Transliteration Result",
                            value=result_text_combined, height=300)
-
-        # PREPROCESSING TAB
-        with preprocessing_tab.container():
-            st.info(
-                'Click the image to zoom in and see the preprocessing steps more clearly', icon="ℹ️")
-            # Path to the folder containing preprocessed images
-            preprocessed_folder = "./images/preprocessed/"
-            # Get a list of all image files in the folder
-            image_files = [f for f in os.listdir(
-                preprocessed_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
-
-            rows, cols = 1, 4
-            fig, axes = plt.subplots(rows, cols, figsize=(15, 5))
-
-            for j in range(cols):
-                index = j
-                if index < len(image_files):
-                    image_path = os.path.join(
-                        preprocessed_folder, image_files[index])
-
-                    # Load image using PIL
-                    img = Image.open(image_path)
-
-                    image_name = image_files[index].split('_')[1].split('.')[0]
-                    # Display image on the subplot
-                    axes[j].imshow(img, cmap='gray')
-                    axes[j].axis("off")  # Turn off axis labels
-                    axes[j].set_title(f"Step {index+1}\n{image_name}")
-
-            # Adjust the top spacing to prevent cutting off the top of the images
-            plt.subplots_adjust(top=0.9)
-
-            # Convert Matplotlib plot to PNG image
-            image_stream = io.BytesIO()
-            plt.savefig(image_stream, format='png')
-            plt.close()
-
-            # Display the image in Streamlit
-            st.image(image_stream, use_column_width=True)
-
-        # create container directly within the tab
-        with od_tab.container():
-            st.info(
-                'Use the slider to compare the original and processed image', icon="ℹ️")
-
-            with st.expander("Label Explanation"):
-                st.write(
-                    "The labels used in the object detection represent different types of characters:")
-                st.write("- `u_'something'`: Aksara Utama")
-                st.write("- `p_'something'`: Aksara Pasangan")
-                st.write("- `s_'something'`: Aksara Sandhangan")
-
-            processed_image = cv2.imread('./images/result/result_image.jpg')
-            # render image-comparison
-            image_comparison(
-                img1=image,
-                img2=processed_image,
-                width = 700,
-                make_responsive=False,
-                in_memory=False
-            )
 
 if __name__ == "__main__":
     main()

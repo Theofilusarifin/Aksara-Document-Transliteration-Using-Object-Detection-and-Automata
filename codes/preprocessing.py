@@ -2,36 +2,58 @@ import cv2
 import numpy as np
 
 def image_preprocessing_process(image):
-    # cv2.imwrite('./images/preprocessed/0_original.jpg', image)
+    try:
+        # convert to grayscale
+        grayscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # convert to grayscale
-    grayscaled_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite('./images/preprocessed/1_grayscalled.jpg', grayscaled_image)
+    except Exception as e:
+        # Handle error in converting to grayscale
+        print(f"Image Preprocessing Process Error (Grayscale Conversion): {e}")
+        return None, None
 
-    # blur
-    blurred_image = cv2.GaussianBlur(grayscaled_image, (0, 0), sigmaX=33, sigmaY=33)
-    cv2.imwrite('./images/preprocessed/2_blurred.jpg', blurred_image)
+    try:
+        # otsu threshold
+        thresholded_image = cv2.threshold(grayscale_image, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
 
-    # divide
-    divided_image = cv2.divide(grayscaled_image, blurred_image, scale=255)
-    cv2.imwrite('./images/preprocessed/3_divided.jpg', divided_image)
+    except Exception as e:
+        # Handle error in Otsu thresholding
+        print(f"Image Preprocessing Process Error (Otsu Threshold): {e}")
+        return None, None
 
-    # otsu threshold
-    thresholded_image = cv2.threshold(divided_image, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
-    cv2.imwrite('./images/preprocessed/4_thresholded.jpg', thresholded_image)
+    try:
+        # Bitwise not
+        binary_image = cv2.bitwise_not(thresholded_image)
 
-    # apply morphology
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
-    morphological_closing_image = cv2.morphologyEx(thresholded_image, cv2.MORPH_CLOSE, kernel)
-    # cv2.imwrite('./images/preprocessed/5_morphology.jpg', morphological_closing_image)
+    except Exception as e:
+        # Handle error in bitwise NOT operation
+        print(f"Image Preprocessing Process Error (Bitwise NOT): {e}")
+        return None, None
 
-    binary_image = cv2.bitwise_not(morphological_closing_image)
-    # cv2.imwrite('./images/preprocessed/6_binary.jpg', binary_image)
+    try:
+        # Define the kernel for dilation
+        kernel = np.ones((7, 7), np.uint8)
+        # Perform dilation
+        dilated_image = cv2.dilate(binary_image, kernel, iterations=1)
 
-    # Define the kernel for dilation
-    kernel = np.ones((7, 7), np.uint8)
-    # Perform dilation
-    dilated_image = cv2.dilate(binary_image, kernel, iterations=1)
-    # cv2.imwrite('./images/preprocessed/7_dilated.jpg', binary_image)
+    except Exception as e:
+        # Handle error in dilation
+        print(f"Image Preprocessing Process Error (Dilation): {e}")
+        return None, None
+
+    try:
+        # Find contours and filter out small areas
+        contours, _ = cv2.findContours(dilated_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        min_area_threshold = 50  # Adjust the threshold as needed
+
+        # Contour Filtering
+        for contour in contours:
+            area = cv2.contourArea(contour)
+            if area < min_area_threshold:
+                cv2.drawContours(dilated_image, [contour], 0, 0, -1)
+
+    except Exception as e:
+        # Handle error in finding contours or contour filtering
+        print(f"Image Preprocessing Process Error (Contour Processing): {e}")
+        return None, None
 
     return thresholded_image, dilated_image
