@@ -10,45 +10,49 @@ from codes.projection_profile import projection_profile_process, ProjectionProfi
 from codes.annotation import annotations_process, AnnotationProcessError
 from codes.transliteration import transliteration_fsa, TransliterationFSAError, FSAProcessError
 
+def check_image_aspect_ratio(image):
+    # Check if the image maintains a 3:4 aspect ratio
+    expected_aspect_ratio = 3 / 4
+    height, width, _ = image.shape
+    # Calculate the actual aspect ratio
+    actual_aspect_ratio = width / height
+    # Define a tolerance for aspect ratio comparison
+    aspect_ratio_tolerance = 0.1
+    # Check if the aspect ratio is within the tolerance of the expected aspect ratio
+    if not (abs(actual_aspect_ratio - expected_aspect_ratio) <= aspect_ratio_tolerance):
+        raise ValueError(f"Image should maintain a 3:4 aspect ratio.")
+
 def transliteration_pipeline(image):
     try:
+         # Check image size before processing
+        check_image_aspect_ratio(image)
         thresholded_image, dilated_image = image_preprocessing_process(image)
         model_input = cv2.cvtColor(thresholded_image, cv2.COLOR_GRAY2RGB)
     except ImagePreprocessingError as e:
-        result_text = 'error'
         st.error(f"Image preprocessing error: {e}")
         return
-
     try:
         annotation_path = object_detection_process(model_input)
         image_result_process(thresholded_image, annotation_path)
     except (ObjectDetectionProcessError, ImageResultProcessError) as e:
         st.error(f"Object detection error: {e}")
-        result_text = 'error'
         return
-
     try:
         row_coordinates = projection_profile_process(dilated_image)
     except ProjectionProfileError as e:
-        result_text = 'error'
         st.error(f"Projection profile error: {e}")
         return
-
     try:
         document_annotations = annotations_process(
             annotation_path, image, row_coordinates)
     except AnnotationProcessError as e:
-        result_text = 'error'
         st.error(f"Annotation process error: {e}")
         return
-
     try:
         result_text = transliteration_fsa(document_annotations)
     except (TransliterationFSAError, FSAProcessError) as e:
-        result_text = 'error'
         st.error(f"Transliteration FSA error: {e}")
         return
-
     time.sleep(3)
     return result_text
 
@@ -100,7 +104,6 @@ def main():
         return
 
     if image_processed:
-        # HOME TAB
         with st.container():
             st.info(
                 'Scroll for more transliteration details if the content exceeds the text area', icon="ℹ️")
