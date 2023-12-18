@@ -3,6 +3,12 @@ import cv2
 import shutil
 from ultralytics import YOLO
 
+class ObjectDetectionProcessError(Exception):
+    pass
+
+class ImageResultProcessError(Exception):
+    pass
+
 def object_detection_process(image):
     try:
         TEST_LABEL_PATH = './images/result/'
@@ -14,8 +20,7 @@ def object_detection_process(image):
 
     except Exception as e:
         # Handle YOLO model prediction error
-        print(f"Object Detection Process Error: {e}")
-        return None
+        raise ObjectDetectionProcessError(f"{e}")
 
     try:
         label_folder = os.path.join(TEST_LABEL_PATH, RESULT_IMAGE_NAME+'/labels/')
@@ -29,26 +34,22 @@ def object_detection_process(image):
 
     except FileNotFoundError:
         # Handle file not found error for label file
-        print("Object Detection Process Error: Label file not found.")
-        return None
+        raise ObjectDetectionProcessError("Label file not found.")
 
     except IndexError:
         # Handle index error when listing files in label_folder
-        print("Object Detection Process Error: No files found in label folder.")
-        return None
+        raise ObjectDetectionProcessError("No files found in label folder.")
 
     except Exception as e:
         # Handle other unexpected errors
-        print(f"Object Detection Process Error: {e}")
-        return None
+        raise ObjectDetectionProcessError(f"{e}")
 
     try:
         shutil.rmtree(os.path.join(TEST_LABEL_PATH, RESULT_IMAGE_NAME))
 
     except FileNotFoundError:
         # Handle file not found error when trying to remove directory
-        print("Object Detection Process Error: Directory not found for removal.")
-        return None
+        raise ObjectDetectionProcessError("Directory not found for removal.")
 
     return destination_file_path
 
@@ -106,8 +107,7 @@ def image_result_process(original_image, annotation_path):
     }
     except Exception as e:
         # Handle error in defining labels
-        print(f"Image Result Process Error (Defining Labels): {e}")
-        return None
+        raise ImageResultProcessError(f"{e}")
 
     try:
         # Annotations are in a text file with one line per annotation
@@ -116,13 +116,11 @@ def image_result_process(original_image, annotation_path):
 
     except FileNotFoundError:
         # Handle annotation file not found error
-        print("Image Result Process Error (Annotation File Not Found): Annotation file not found.")
-        return None
+        raise ImageResultProcessError("Annotation file not found.")
 
     except Exception as e:
         # Handle other unexpected errors
-        print(f"Image Result Process Error (Reading Annotation File): {e}")
-        return None
+        raise ImageResultProcessError(f"{e}")
 
     # Convert the image to BGR if it's in grayscale
     if len(original_image.shape) == 2:
@@ -148,15 +146,13 @@ def image_result_process(original_image, annotation_path):
 
     except Exception as e:
         # Handle error in overlaying annotations
-        print(f"Image Result Process Error (Overlaying Annotations): {e}")
-        return None
+        raise ImageResultProcessError(f"{e}")
 
     # Save the result image
     try:
         cv2.imwrite('./images/result/result_image.jpg', original_image)
     except Exception as e:
         # Handle error in saving the result image
-        print(f"Image Result Process Error (Saving Result Image): {e}")
-        return None
-    
+        raise ImageResultProcessError(f"{e}")
+
     return original_image

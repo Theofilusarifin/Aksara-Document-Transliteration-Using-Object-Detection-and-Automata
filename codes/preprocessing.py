@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 
+class ImagePreprocessingError(Exception):
+    pass
+
 def image_preprocessing_process(image):
     try:
         # convert to grayscale
@@ -8,8 +11,7 @@ def image_preprocessing_process(image):
 
     except Exception as e:
         # Handle error in converting to grayscale
-        print(f"Image Preprocessing Process Error (Grayscale Conversion): {e}")
-        return None, None
+        raise ImagePreprocessingError(f"Grayscale Conversion Error: {e}")
 
     try:
         # otsu threshold
@@ -17,8 +19,7 @@ def image_preprocessing_process(image):
 
     except Exception as e:
         # Handle error in Otsu thresholding
-        print(f"Image Preprocessing Process Error (Otsu Threshold): {e}")
-        return None, None
+        raise ImagePreprocessingError(f"Otsu Threshold Error: {e}")
 
     try:
         # Bitwise not
@@ -26,8 +27,7 @@ def image_preprocessing_process(image):
 
     except Exception as e:
         # Handle error in bitwise NOT operation
-        print(f"Image Preprocessing Process Error (Bitwise NOT): {e}")
-        return None, None
+        raise ImagePreprocessingError(f"Bitwise NOT Error: {e}")
 
     try:
         # Define the kernel for dilation
@@ -37,8 +37,7 @@ def image_preprocessing_process(image):
 
     except Exception as e:
         # Handle error in dilation
-        print(f"Image Preprocessing Process Error (Dilation): {e}")
-        return None, None
+        raise ImagePreprocessingError(f"Dilation Error: {e}")
 
     try:
         # Find contours and filter out small areas
@@ -53,7 +52,6 @@ def image_preprocessing_process(image):
 
     except Exception as e:
         # Handle error in finding contours or contour filtering
-        print(f"Image Preprocessing Process Error (Contour Processing): {e}")
-        return None, None
+        raise ImagePreprocessingError(f"Contour Processing Error: {e}")
 
     return thresholded_image, dilated_image

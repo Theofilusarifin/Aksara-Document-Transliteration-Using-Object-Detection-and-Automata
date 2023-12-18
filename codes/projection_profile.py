@@ -1,5 +1,7 @@
 import numpy as np
 
+class ProjectionProfileError(Exception):
+    pass
 
 def projection_profile_process(input_image):
     try:
@@ -17,8 +19,7 @@ def projection_profile_process(input_image):
 
     except Exception as e:
         # Handle error in horizontal projection
-        print(f"Projection Profile Process Error (Horizontal Projection): {e}")
-        return None
+        raise ProjectionProfileError(f"Horizontal Projection Error: {e}")
 
     try:
         # Melakukan iterasi pada tiap titik horizontal
@@ -52,8 +53,7 @@ def projection_profile_process(input_image):
 
     except Exception as e:
         # Handle error in iteration or segment closing
-        print(f"Projection Profile Process Error (Iteration or Segment Closing): {e}")
-        return None
+        raise ProjectionProfileError(f"Iteration or Segment Closing Error: {e}")
 
     # Gabungkan koordinat awal dan akhir tiap segmen untuk return
     row_coordinates = list(zip(start_putih, end_putih))
