@@ -1,12 +1,8 @@
 <p align="center">
-  <img src="https://img.icons8.com/external-tal-revivo-regular-tal-revivo/96/external-readme-is-a-easy-to-build-a-developer-hub-that-adapts-to-the-user-logo-regular-tal-revivo.png" width="100" />
-</p>
-<p align="center">
     <h1 align="center">AKSARA-TRANSLITERATION-USING-OBJECT-DETECTION-AND-AUTOMATA</h1>
 </p>
 <p align="center">
-    <em>Error generating text for slogan: Client error '429 Too Many Requests' for url 'https://api.openai.com/v1/chat/completions'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429</em>
+    <em>Theofilus Arifin</em>
 </p>
 <p align="center">
 	<img src="https://img.shields.io/github/license/Theofilusarifin/Aksara-Transliteration-Using-Object-Detection-and-Automata?style=flat&color=0080ff" alt="license">
@@ -26,33 +22,20 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 ##  Quick Links
 
 > - [ Overview](#-overview)
-> - [ Features](#-features)
 > - [ Repository Structure](#-repository-structure)
 > - [ Modules](#-modules)
 > - [ Getting Started](#-getting-started)
 >   - [ Installation](#-installation)
 >   - [ Running Aksara-Transliteration-Using-Object-Detection-and-Automata](#-running-Aksara-Transliteration-Using-Object-Detection-and-Automata)
->   - [ Tests](#-tests)
-> - [ Project Roadmap](#-project-roadmap)
 > - [ Contributing](#-contributing)
-> - [ License](#-license)
-> - [ Acknowledgments](#-acknowledgments)
 
 ---
 
 ##  Overview
-
-Error generating text for overview: Client error '429 Too Many Requests' for url 'https://api.openai.com/v1/chat/completions'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+Welcome to my Aksara Jawa Transliteration Website! Leveraging the cutting-edge technologies of YOLOv8 for accurate object detection and Finite State Automata for efficient transliteration, our platform ensures a seamless experience in converting Aksara Jawa script to Latin characters. Boasting impressive precision, recall, and mAP metrics of 0.967, 0.922, and 0.961 during training, and 0.966, 0.924, and 0.961 during validation, our model excels in providing reliable results. The user-friendly Streamlit interface allows users to effortlessly input Aksara Jawa text and receive precise Latin script equivalents. With a focus on advanced technology, robust metrics, and user-centric design, our platform stands out as a trustworthy solution for exploring the beauty of Aksara Jawa with confidence and accuracy.
 
 ---
 
-##  Features
-
-Error generating text for features: Client error '429 Too Many Requests' for url 'https://api.openai.com/v1/chat/completions'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
-
----
 
 ##  Repository Structure
 
@@ -141,7 +124,7 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 
 Ensure you have the following dependencies installed on your system:
 
-* **Python**: `version x.y.z`
+* **Python**: `version 3.9.0`
 
 ###  Installation
 
@@ -170,22 +153,6 @@ Use the following command to run Aksara-Transliteration-Using-Object-Detection-a
 ```sh
 python main.py
 ```
-
-###  Tests
-
-To execute tests, run:
-
-```sh
-pytest
-```
-
----
-
-##  Project Roadmap
-
-- [X] `► INSERT-TASK-1`
-- [ ] `► INSERT-TASK-2`
-- [ ] `► ...`
 
 ---
 
@@ -223,19 +190,5 @@ Contributions are welcome! Here are several ways you can contribute:
 Once your PR is reviewed and approved, it will be merged into the main branch.
 
 </details>
-
----
-
-##  License
-
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
-##  Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
-
-[**Return**](#-quick-links)
 
 ---
