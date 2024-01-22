@@ -57,6 +57,12 @@ def annotations_process(annotation_path, image, row_coordinates):
         for y_start, y_end in row_coordinates:
             # Filter dataframe annotasi untuk mengumpulkan hasil anotasi pada baris segmen yang dipilih
             selected_df = df[(df['Y'] >= y_start) & (df['Y'] <= y_end)]
+
+            y_middle = (y_start + y_end)/2
+             # Check condition and update the DataFrame
+            mask = (selected_df['Y'] > y_middle) & (selected_df['Class'].isin(['utama_ga', 'utama_ya', 'utama_nya', 'utama_ra']))
+            selected_df.loc[mask, 'Class'] = selected_df.loc[mask, 'Class'].str.replace('utama_', 'pasangan_')
+
             # Urutkan hasil anotasi pada satu baris berdasarkan X untuk pembacaan dari kiri ke kanan
             selected_df = selected_df.sort_values(by=["X"])
             # Ambil label kelas pada satu baris
