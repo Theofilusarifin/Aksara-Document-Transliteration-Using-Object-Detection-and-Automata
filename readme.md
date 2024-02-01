@@ -34,6 +34,8 @@
 ##  Overview
 Welcome to my Aksara Jawa Transliteration Website! Leveraging the cutting-edge technologies of YOLOv8 for accurate object detection and Finite State Automata for efficient transliteration, our platform ensures a seamless experience in converting Aksara Jawa script to Latin characters. Boasting impressive precision, recall, and mAP metrics of 0.967, 0.922, and 0.961 during training, and 0.966, 0.924, and 0.961 during validation, our model excels in providing reliable results. The user-friendly Streamlit interface allows users to effortlessly input Aksara Jawa text and receive precise Latin script equivalents. With a focus on advanced technology, robust metrics, and user-centric design, our platform stands out as a trustworthy solution for exploring the beauty of Aksara Jawa with confidence and accuracy.
 
+[Documentation Details](https://github.com/Theofilusarifin/Aksara-Document-Transliteration-Using-Object-Detection-and-Automata/blob/main/Documentation.pdf)
+
 ---
 
 
